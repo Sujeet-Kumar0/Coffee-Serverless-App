@@ -32,8 +32,9 @@ provider:
 
 # for more control over your function artifacts...
 package:
-  individually: true #to package functions individually.
+  individually: true
 
+# configure to convert the .ts files to .js files...
 custom:
   esbuild:
     bundle: true
@@ -93,5 +94,6 @@ functions:
           method: DELETE
           cors: true
 
+# configure DynamoDB tables which are imported from resources/dynamodb-tables.yml file...
 resources:
   - ${file(resources/dynamodb-tables.yml)}
