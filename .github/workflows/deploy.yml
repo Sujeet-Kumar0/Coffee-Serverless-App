@@ -64,7 +64,7 @@ jobs:
 
   deploy-prod:
     name: Deploy to Production
-    needs: deploy-dev
+    needs: test
     if: endsWith(github.ref, '/main') || github.event.inputs.stage == 'prod'
     runs-on: ubuntu-latest
     environment: production
