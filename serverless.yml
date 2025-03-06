@@ -1,0 +1,97 @@
+service: coffee-serverless-app
+
+frameworkVersion: '3'
+
+# define IAM roles per function...
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-esbuild
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
+
+  environment:
+    ORDERS_TABLE: ${self:service}-orders-${self:provider.stage}-table
+    NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: !GetAtt OrdersTable.Arn
+
+# for more control over your function artifacts...
+package:
+  individually: true #to package functions individually.
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: 'node18'
+    define:
+      'require.resolve': undefined
+    platform: 'node'
+    external:
+      - 'aws-sdk'
+
+# Lambda functions configuration...
+functions:
+  createCoffeeOrderFun:
+    name: create-coffee-order-${opt:stage}
+    handler: src/functions/createOrder.handler
+    events:
+      - http:
+          path: /create
+          method: POST
+          cors: true
+
+  getAllCoffeeOrdersFun:
+    name: get-all-coffee-orders-${opt:stage}
+    handler: src/functions/listOrders.handler
+    events:
+      - http:
+          path: /orders
+          method: GET
+          cors: true
+
+  getCoffeeOrderFun:
+    name: get-coffee-order-${opt:stage}
+    handler: src/functions/getOrder.handler
+    events:
+      - http:
+          path: /orders/{id}
+          method: GET
+          cors: true
+
+  updateCoffeeOrderFun:
+    name: update-coffee-order-${opt:stage}
+    handler: src/functions/updateOrder.handler
+    events:
+      - http:
+          path: /update/{id}
+          method: PUT
+          cors: true
+
+  deleteCoffeeOrderFun:
+    name: delete-coffee-order-${opt:stage}
+    handler: src/functions/deleteOrder.handler
+    events:
+      - http:
+          path: /delete/{id}
+          method: DELETE
+          cors: true
+
+resources:
+  - ${file(resources/dynamodb-tables.yml)}
