@@ -72,7 +72,7 @@ functions:
     handler: src/functions/getOrder.handler
     events:
       - http:
-          path: /orders/{id}
+          path: /orders/{orderId}
           method: GET
           cors: true
 
@@ -81,7 +81,7 @@ functions:
     handler: src/functions/updateOrder.handler
     events:
       - http:
-          path: /update/{id}
+          path: /update/{orderId}
           method: PUT
           cors: true
 
@@ -90,7 +90,7 @@ functions:
     handler: src/functions/deleteOrder.handler
     events:
       - http:
-          path: /delete/{id}
+          path: /delete/{orderId}
           method: DELETE
           cors: true
 
