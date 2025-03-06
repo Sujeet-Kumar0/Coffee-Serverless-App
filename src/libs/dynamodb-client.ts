@@ -66,4 +66,3 @@ export const scanOrders = async (lastEvaluatedKey = null, limit = 10) => {
         lastEvaluatedKey: LastEvaluatedKey, // Pass this to fetch the next page
     };
 };
-;

@@ -1,3 +1,4 @@
 /.idea/
 folder.zsh
 /node_modules/
+/.serverless/

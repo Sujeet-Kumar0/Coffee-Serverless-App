@@ -1,15 +1,41 @@
 Resources:
+  # Define a DynamoDB table resource for storing orders
   OrdersTable:
+    # Specifies this is a DynamoDB table resource type in CloudFormation
     Type: AWS::DynamoDB::Table
     Properties:
+      # The name of the table, referenced from environment variables
       TableName: ${self:provider.environment.ORDERS_TABLE}
+
+      # Sets the billing mode to pay per request (on-demand capacity)
+      # Instead of provisioned capacity, you only pay for the actual reads/writes you perform
       BillingMode: PAY_PER_REQUEST
+
+      # Define the attributes/columns that will be used in the key schema
       AttributeDefinitions:
+        # orderId is defined as a String type attribute
         - AttributeName: orderId
-          AttributeType: S
+          AttributeType: S  # S represents String type
+
+      # Define the primary key structure for the table
       KeySchema:
+        # Using orderId as a HASH (Partition) key
+        # This means orderId will be used to partition data across storage nodes
         - AttributeName: orderId
           KeyType: HASH
+
+      # Add tags to the DynamoDB table for resource organization and tracking
       Tags:
+        # Environment tag to identify which environment this table belongs to
         - Key: Environment
           Value: ${self:provider.stage}
+
+      # Enable server-side encryption (SSE) for data at rest
+      # This provides an additional layer of data protection
+      SSESpecification:
+        SSEEnabled: true
+
+      # Enable point-in-time recovery (PITR) for the table
+      # This allows you to restore the table to any point in time within the last 35 days
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true

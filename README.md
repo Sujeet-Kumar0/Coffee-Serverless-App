@@ -13,7 +13,7 @@ A complete serverless REST API for managing coffee shop orders, built with AWS L
 
 ## Architecture
 
-![Architecture Diagram](https://via.placeholder.com/800x400?text=Coffee+Shop+API+Architecture)
+![Architecture Diagram](https://i.postimg.cc/GmvRhjrL/Untitled-2025-03-06-1705.png)
 
 This project implements a serverless architecture with the following components:
 
@@ -44,8 +44,8 @@ This project implements a serverless architecture with the following components:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/coffee-shop-api.git
-cd coffee-shop-api
+git clone https://github.com/Sujeet-Kumar0/Coffee-Serverless-App.git
+cd Coffee-Serverless-App
 ```
 
 2. Install dependencies
@@ -57,8 +57,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-The API will be available at http://localhost:3000
 
 ### Deployment
 
@@ -81,8 +79,8 @@ The project includes a GitHub Actions workflow for continuous integration and de
 The pipeline performs the following steps:
 1. Runs linting and type checking
 2. Executes unit tests
-3. Deploys to the development environment when code is pushed to the master branch
-4. Deploys to production when manually triggered with the 'prod' stage parameter
+3. Deploys to the development environment when code is pushed to the develop branch
+4. Deploys to production when pushed to the main branch
 
 ## Local Development
 
