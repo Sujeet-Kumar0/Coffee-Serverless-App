@@ -29,15 +29,19 @@ export const createOrder = async (order: Record<string, any>) => {
 export const updateOrder = async (
     orderId: string,
     updateExpression: string,
-    expressionAttributeValues: Record<string, any>
+    expressionAttributeValues: Record<string, any>,
+    expressionAttributeNames?: Record<string, string>
 ) => {
     const params = {
         TableName: ORDERS_TABLE,
         Key: {orderId},
         UpdateExpression: updateExpression,
         ExpressionAttributeValues: expressionAttributeValues,
-        ReturnValues: 'ALL_NEW'
+        ReturnValues: 'ALL_NEW',
+        ...(expressionAttributeNames && { ExpressionAttributeNames: expressionAttributeNames })
     };
+
+    console.log('params', JSON.stringify(params, null, 2));
 
     const {Attributes} = await dynamoDb.send(new UpdateCommand(params as UpdateCommandInput));
     return Attributes;

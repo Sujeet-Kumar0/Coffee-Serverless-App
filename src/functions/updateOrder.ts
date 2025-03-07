@@ -26,6 +26,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         const expressionAttributeValues: Record<string, any> = {
             ':updatedAt': new Date().toISOString()
         };
+        const expressionAttributeNames: Record<string, string> = {};
 
         // Add fields to update
         if (updateData.customerName) {
@@ -36,6 +37,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         if (updateData.status) {
             updateExpression += ', #status = :status';
             expressionAttributeValues[':status'] = updateData.status;
+            expressionAttributeNames['#status'] = 'status';
         }
 
         if (updateData.items) {
@@ -53,7 +55,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         }
 
         // Update in DynamoDB
-        const updatedOrder = await updateOrder(orderId, updateExpression, expressionAttributeValues);
+        const updatedOrder = await updateOrder(orderId, updateExpression, expressionAttributeValues,expressionAttributeNames);
 
         return formatJSONResponse({
             message: 'Order updated successfully',
