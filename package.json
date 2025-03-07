@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "serverless offline start --stage dev",
     "deploy:dev": "serverless deploy --stage dev",
-    "deploy:prod": "serverless deploy --stage prod",
+    "deploy:prod": "serverless delete --stage prod",
     "test": "jest",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
